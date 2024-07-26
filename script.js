@@ -25,6 +25,7 @@ Parti dell'app "MUST HAVE".
 const API_KEY = `LcdKEcVj7T4glrTFvNyVrAQKnVQeFoXgEOEJv5HA`;
 
 const loadingSpinner = document.getElementById("loading-spinner");
+const loadingError = document.getElementById("loading-failed");
 const sections = document.querySelectorAll("section");
 const neoButtons = document.getElementById("neo-buttons");
 const neoTHead = document.querySelector("#neo-table thead tr")
@@ -32,6 +33,17 @@ const neoTBody = document.querySelector("#neo-table tbody")
 const astroPictureImg = document.getElementById("astro-picture");
 const astroPictureData = document.getElementById("astro-picture-data");
 const marsPictures = document.querySelector("#mars-pictures .carousel-inner");
+const roverSelection = document.querySelectorAll("#rover-selection button");
+const marsSwiper = document.getElementById("mars-swiper");
+const swiper = new Swiper(`.swiper`, {
+    direction: "horizontal",
+    navigation: {
+        prevEl: ".swiper-button-prev",
+        nextEl: ".swiper-button-next"
+    },
+    centeredSlides: `auto`,
+    effect: "coverflow"
+});
 
 const getTodayDate = () => {
     const today = new Date()
@@ -167,15 +179,14 @@ const displayImg = (data) => {
 
 
 // Mars Rover
-const marsUrl = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/latest_photos`
+const marsUrl = `https://api.nasa.gov/mars-photos/api/v1/rovers/`
 
-const getMarsData = async () => {
+const getMarsData = async (rover = "perseverance") => {
     let today = getTodayDate();
 
     try {
-        const response = await fetch(`${marsUrl}?api_key=${API_KEY}`);
+        const response = await fetch(`${marsUrl}/${rover}/latest_photos?api_key=${API_KEY}`);
         const data = await response.json();
-        console.log(data.latest_photos);
         displayMarsImg(data.latest_photos);
     } catch (error) {
         console.log("rover data error", error);
@@ -184,20 +195,19 @@ const getMarsData = async () => {
 
 const displayMarsImg = (data) => {
     data.forEach((item, index) => {
-        const carouselItem = document.createElement("div");
-        carouselItem.setAttribute("class", "carousel-item h-100");
+        const swiperSlide = document.createElement("div");
+        swiperSlide.setAttribute("class", "swiper-slide d-flex flex-column justify-content-center align-items-center gap-3");
 
-        if (index === 0) {
-            carouselItem.classList.add("active");
-        }
+        const imgWrapper = document.createElement("div");
+        imgWrapper.setAttribute("class", "w-50");
 
         const img = document.createElement("img");
-        img.setAttribute("class", "h-100 object-fit-cover");
+        img.setAttribute("class", "w-100 object-fit-cover");
         img.src = item.img_src;
         img.alt = item.id;
 
         const caption = document.createElement("div");
-        caption.setAttribute("class", "carousel-caption d-block")
+        caption.setAttribute("class", "d-flex justify-content-center gap-3 text-light")
 
         const sol = document.createElement("p");
         sol.innerText = `Sol: ${item.sol}`;
@@ -208,13 +218,19 @@ const displayMarsImg = (data) => {
         const camera = document.createElement("p");
         camera.innerText = `Camera: ${item.camera.name} - ${item.camera.full_name}`;
 
+        imgWrapper.appendChild(img);
         caption.append(sol, date, camera);
-        carouselItem.append(img, caption);
-        marsPictures.appendChild(carouselItem);
+        swiperSlide.append(imgWrapper, caption);
+        marsSwiper.appendChild(swiperSlide);
     })
 }
 
-
+roverSelection.forEach(button => {
+    button.addEventListener("click", () => {
+        marsSwiper.replaceChildren();
+        getMarsData(button.value);
+    })
+})
 
 
 // LOADING
@@ -222,10 +238,11 @@ Promise.all([getNeowsData(), getMarsData(), getImg()])
     .then(() => {
         loadingSpinner.classList.add("d-none");
         sections.forEach(section => {
-            section.classList.remove("d-none");
-            section.classList.add("d-block");
+            section.classList.replace("d-none", "d-block");
         })
     })
     .catch((error) => {
-        console.log("Errore durante il caricamento dei dati.", error);
+        console.log(error);
+        loadingSpinner.classList.add("d-none");
+        loadingError.classList.replace("d-none", "d-flex");
     })

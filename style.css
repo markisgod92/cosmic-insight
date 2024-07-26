@@ -4,6 +4,6 @@
     overflow: scroll;
 }
 
-#mars-pictures {
-    height: 40dvh;
+.swiper-slide {
+    width: fit-content;
 }
