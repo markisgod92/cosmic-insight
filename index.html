@@ -48,18 +48,22 @@
                     <div class="col-12">
                         <div id="neo-buttons" class="pb-3 d-flex justify-content-evenly align-items-center"></div>
                     </div>
-                    <div class="col-12 pb-5">
+                    <div class="col-12 col-md-4 pb-5">
+                        <svg id="asteroidMap" viewBox="-400 -400 800 800" preserveAspectRatio="xMidYMid meet"></svg>
+                        <div id="tooltip" class="tooltip"></div>
+                    </div>
+                    <div class="col-12 col-md-8 pb-5">
                         <div id="neo-table-container">
                             <table id="neo-table" class="table">
                                 <thead>
                                     <tr>
-                                        <td scope="col" class="fw-bold">Name</td>
-                                        <td scope="col" class="fw-bold">Magnitude</td>
-                                        <td scope="col" class="fw-bold">Close Approach Date</td>
-                                        <td scope="col" class="fw-bold">Distance</td>
-                                        <td scope="col" class="fw-bold">Speed</td>
-                                        <td scope="col" class="fw-bold">Estimated Diameter</td>
-                                        <td scope="col" class="fw-bold">Hazardous</td>
+                                        <td scope="col" class="fw-bold align-top">Name</td>
+                                        <td scope="col" class="fw-bold align-top">Magnitude</td>
+                                        <td scope="col" class="fw-bold align-top">Close Approach Date</td>
+                                        <td scope="col" class="fw-bold align-top">Distance</td>
+                                        <td scope="col" class="fw-bold align-top">Speed</td>
+                                        <td scope="col" class="fw-bold align-top">Estimated Diameter</td>
+                                        <td scope="col" class="fw-bold align-top">Hazardous</td>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -133,6 +137,7 @@
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="script.js"></script>
 </body>
 

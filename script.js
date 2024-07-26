@@ -24,6 +24,7 @@ Parti dell'app "MUST HAVE".
 
 const API_KEY = `LcdKEcVj7T4glrTFvNyVrAQKnVQeFoXgEOEJv5HA`;
 
+// DOM Elements
 const loadingSpinner = document.getElementById("loading-spinner");
 const loadingError = document.getElementById("loading-failed");
 const sections = document.querySelectorAll("section");
@@ -44,6 +45,9 @@ const swiper = new Swiper(`.swiper`, {
     centeredSlides: `auto`,
     effect: "coverflow"
 });
+const svg = d3.select("#asteroidMap")
+const tooltip = d3.select("#tooltip");
+
 
 const getTodayDate = () => {
     const today = new Date()
@@ -90,8 +94,68 @@ const orderData = (data) => {
     })
 }
 
+const drawNeo = (data) => {
+    svg.selectAll("*").remove();
+
+    const asteroidData = Object.values(data).flat().map(asteroid => {
+        return {
+            name: asteroid.name,
+            size: asteroid.estimated_diameter.kilometers.estimated_diameter_max,
+            missDistance: asteroid.close_approach_data[0].miss_distance.kilometers,
+            orbitingBody: asteroid.close_approach_data[0].orbiting_body
+        };
+    });
+
+    const sizeScale = d3.scaleSqrt()
+        .domain([0, d3.max(asteroidData, d => d.size)])
+        .range([2, 20]);
+
+    const angleScale = d3.scaleLinear()
+        .domain([0, asteroidData.length])
+        .range([0, 2 * Math.PI]);
+
+    const distanceScale = d3.scaleLog()
+        .domain([d3.min(asteroidData, d => d.missDistance), d3.max(asteroidData, d => d.missDistance)])
+        .range([50, 400]);
+
+    svg.selectAll("circle")
+        .data(asteroidData)
+        .enter()
+        .append("circle")
+        .attr("cx", d => distanceScale(d.missDistance) * Math.cos(angleScale(asteroidData.indexOf(d))))
+        .attr("cy", d => distanceScale(d.missDistance) * Math.sin(angleScale(asteroidData.indexOf(d))))
+        .attr("r", d => sizeScale(d.size))
+        .attr("fill", "orange")
+        .attr("stroke", "white")
+        .attr("stroke-width", 1)
+        .on("mouseover", (event, d) => {
+            tooltip.style("opacity", 1)
+                .html(`Name: ${d.name}<br>Size: ${d.size.toFixed(2)} km<br>Miss Distance: ${d.missDistance} km`)
+                .style("left", `${event.pageX + 10}px`)
+                .style("top", `${event.pageY - 20}px`);
+        })
+        .on("mouseout", () => {
+            tooltip.style("opacity", 0);
+        });
+
+    svg.append("circle")
+        .attr("cx", 0)
+        .attr("cy", 0)
+        .attr("r", 5)
+        .attr("fill", "blue");
+
+    svg.append("text")
+        .attr("x", 0)
+        .attr("y", -10)
+        .attr("text-anchor", "middle")
+        .attr("fill", "white")
+        .text("Earth");
+}
+
 const displayNeowsData = (currentBtn, key, data) => {
     neoTBody.replaceChildren();
+
+    drawNeo(data[key]);
 
     const buttons = document.querySelectorAll(".neows-btn");
     buttons.forEach(button => {
