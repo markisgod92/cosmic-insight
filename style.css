@@ -1,0 +1,9 @@
+#neo-table-container {
+    height: 40dvh;
+    width: 100%;
+    overflow: scroll;
+}
+
+#mars-pictures {
+    height: 40dvh;
+}
