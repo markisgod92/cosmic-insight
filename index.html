@@ -13,14 +13,33 @@
 </head>
 
 <body>
-    <header class="bg-dark text-white">
-        <div class="container">
-            <div class="row py-3">
-                <div class="col-12">
-                    <h1>Cosmic Insight</h1>
-                </div>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">
+                <h1>Cosmic Insight</h1>
+              </a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="./index.html">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#neoData">Neo Data</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#roverPics">Mars Rover Photos</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#apod">APOD</a>
+                  </li>
+                </ul>
+              </div>
             </div>
-        </div>
+          </nav>
     </header>
 
     <main>
@@ -38,8 +57,63 @@
             <p>Content loading failed. Please try again later.</p>
         </div>
 
+        <!--MARS PICTURE MODAL-->
+        <div class="modal bg-dark" tabindex="-1" id="picModal">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <img src="" alt="" class="w-100 h-100 object-fit-cover">
+                    </div>
+                    <div class="modal-footer"></div>
+                </div>
+            </div>
+        </div>
+
+        <!--HIGHLIGHTS-->
+        <section id="highlights" class="d-none">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h3 class="py-3">Highlights</h3>
+                        <div class="row row-cols-1 row-cols-md-3 pb-5">
+                            <div class="col">
+                                <h5>Hit or Miss?</h5>
+                                <div class="card h-100" id="neoHighlight">
+                                    <div class="card-body">
+                                        <h5 class="card-title"></h5>
+                                        <p class="card-text"></p>
+                                        <p class="card-text"></p>
+                                        <p class="card-text"></p>
+                                        <p class="card-text"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h5>Red Planet Snapshots</h5>
+                                <div class="card h-100 border-0">
+                                    <img src="" alt="" id="roverHighlight" class="card-img h-100 w-100 object-fit-cover">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h5>Daily Dose of Space</h5>
+                                <div class="card h-100 border-0" id="apodHighlight">
+                                    <img src="" alt="" class="card-img h-100 w-100 object-fit-cover">
+                                    <div class="card-img-overlay">
+                                        <p class="card-text"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!--NEAR EARTH OBJECTS-->
-        <section class="d-none bg-secondary-subtle">
+        <section class="d-none bg-secondary-subtle" id="neoData">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
@@ -75,7 +149,7 @@
         </section>
 
         <!--ROVER PICTURES-->
-        <section class="d-none bg-dark">
+        <section class="d-none bg-dark" id="roverPics">
             <div class="container">
                 <div class="row pb-5">
                     <div class="col-12">
@@ -85,15 +159,16 @@
                         <div class="d-flex align-items-center gap-3 pb-3" id="rover-selection">
                             <button class="btn btn-secondary" value="perseverance">Perseverance</button>
                             <button class="btn btn-secondary" value="curiosity">Curiosity</button>
-                            <button class="btn btn-secondary" value="opportunity">Opportunity</button>
-                            <button class="btn btn-secondary" value="spirit">Spirit</button>
+                            <button class="btn btn-secondary" value="opportunity" disabled>Opportunity</button>
+                            <button class="btn btn-secondary" value="spirit" disabled>Spirit</button>
                         </div>
                     </div>
-                    <div class="col-12" id="mars-pictures">
-                        <div class="swiper">
-                            <div class="swiper-wrapper align-items-center" id="mars-swiper"></div>
-                            <div class="swiper-button-prev"></div>
-                            <div class="swiper-button-next"></div>
+                    <div class="col-12">
+                        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-6 g-4" id="mars-pictures"></div>
+                    </div>
+                    <div class="col-12">
+                        <div class="mt-3 d-flex justify-content-end align-items-center">
+                            <button class="btn btn-secondary" id="loadMoreRover">Load more</button>
                         </div>
                     </div>
                 </div>
@@ -101,7 +176,7 @@
         </section>
 
         <!--PIC OF THE DAY-->
-        <section class="d-none bg-secondary-subtle">
+        <section class="d-none bg-secondary-subtle" id="apod">
             <div class="container">
                 <div class="row pb-5">
                     <div class="col-12">

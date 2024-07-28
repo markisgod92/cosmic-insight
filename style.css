@@ -24,3 +24,19 @@ svg {
     opacity: 0;
     transition: opacity 0.3s;
 }
+
+.mars-card {
+    cursor: zoom-in;
+    box-shadow: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.mars-card:hover {
+    box-shadow: 0 0 50px 0 black;
+    transform: scale(1.1);
+    z-index: 101;
+}
+
+#astro-picture {
+    cursor: zoom-in;
+}
