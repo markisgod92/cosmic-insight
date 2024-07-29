@@ -22,7 +22,18 @@ Parti dell'app "MUST HAVE".
     prendendo i dati dall'endpoint 'https://dummyjson.com/users' sotto forma di mini avatar
 */
 
-const API_KEY = `LcdKEcVj7T4glrTFvNyVrAQKnVQeFoXgEOEJv5HA`;
+/*
+INDICE:
+38 - DOM Elements
+60 - UTILITY
+88 - NEOWS
+250 - APOD
+321 - MARS ROVER
+413 - USERS
+454 - BANNER
+479 - LOADING
+*/
+
 
 // DOM Elements
 const loadingSpinner = document.getElementById("loading-spinner");
@@ -46,6 +57,9 @@ const formatter = new Intl.NumberFormat("it-IT", {
 })
 
 
+// UTILITY
+const API_KEY = `LcdKEcVj7T4glrTFvNyVrAQKnVQeFoXgEOEJv5HA`;
+
 const getTodayDate = () => {
     const today = new Date()
 
@@ -57,6 +71,18 @@ const getTodayDate = () => {
     return currentDate;
 };
 
+const fetchData = async (api) => {
+    try {
+        const response = await fetch(api);
+        if (!response.ok) {
+            throw new Error(`HTTP error`);
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        return null;
+    }
+}
 
 
 // Asteroids - NeoWS
@@ -64,13 +90,12 @@ const neowsUrl = `https://api.nasa.gov/neo/rest/v1/feed`; //default END 7gg dopo
 
 const getNeowsData = async () => {
     let today = getTodayDate()
-
-    try {
-        const response = await fetch(`${neowsUrl}?start_date=${today}&api_key=${API_KEY}`);
-        const data = await response.json();                                                  // TEST
-        orderData(data.near_earth_objects); 
-    } catch (error) {
-        console.log("neows error", error);
+    const data = await fetchData(`${neowsUrl}?start_date=${today}&api_key=${API_KEY}`);
+    if (data) {
+        const neowsData = data.near_earth_objects;
+        orderData(neowsData);
+    } else {
+        console.log("Error fecthing NEOWS data.")
     }
 }
 
@@ -222,18 +247,16 @@ const createNeoTD = (item, container) => {
 }
 
 
-
 // Image of the Day
 const imgUrl = `https://api.nasa.gov/planetary/apod?thumbs=true`;
 
 const getImg = async () => {
-    try {
-        const response = await fetch(`${imgUrl}&api_key=${API_KEY}`);
-        const data = await response.json();
+    const data = await fetchData(`${imgUrl}&api_key=${API_KEY}`);
+    if (data) {
         displayApodHighlight(data);
         displayImg(data);
-    } catch (error) {
-        console.log("img error", error)
+    } else {
+        console.log("Error fecthing APOD data.")
     }
 }
 
@@ -249,6 +272,7 @@ const displayApodHighlight = (data) => {
 }
 
 const displayImg = (data) => {
+    console.log(data)
     if (data.media_type === "image") {
         astroPictureImg.src = data.hdurl;
     } else if (data.media_type === "video") {
@@ -301,15 +325,14 @@ let currentPage = 0;
 let currentRoverData = [];
 
 const getMarsData = async (rover = "perseverance") => {
-    try {
-        const response = await fetch(`${marsUrl}/${rover}/latest_photos?api_key=${API_KEY}`);
-        const data = await response.json();
+    const data = await fetchData(`${marsUrl}/${rover}/latest_photos?api_key=${API_KEY}`);
+    if (data) {
         displayRoverHighlight(data.latest_photos);
         currentRoverData = data.latest_photos;
         currentPage = 0;
         displayMarsImg();
-    } catch (error) {
-        console.log("rover data error", error);
+    } else {
+        console.log("Error fecthing Rover data.")
     }
 }
 
@@ -389,20 +412,18 @@ const displayMarsModal = (data) => {
 
 // users
 const getUsersData = async () => {
-    try {
-        const response = await fetch(`https://dummyjson.com/users`);
-        const data = await response.json();
-        // random number of users
+    const data = await fetchData(`https://dummyjson.com/users`);
+    if (data) {
+        //get random users
         const users = data.users.slice(0, Math.floor(Math.random() * data.users.length))
         users.forEach(user => displayUser(user));
 
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-    } catch (error) {
-        console.log(error)
+    } else {
+        console.log("Error fecthing Users data.")
     }
 }
-getUsersData()
 
 const displayUser = (data) => {
     const anchor = document.createElement("a");
@@ -422,19 +443,49 @@ const displayUser = (data) => {
 
 const assignUsername = () => {
     const userName = window.localStorage.getItem("username");
-    document.getElementById("usernameData").innerText = userName;
+    document.getElementById("usernameData").innerText = userName
+
+    if (!window.localStorage.getItem("firstTimeUser")) {
+        window.localStorage.setItem("firstTimeUser", "true");
+    }
 }   
 
-assignUsername();
+
+// banner e toast
+const showPrivacyBanner = () => {
+    if (window.localStorage.getItem("firstTimeUser") === "true") {
+        const modal = new bootstrap.Modal(document.getElementById('privacyBanner'));
+        modal.show()
+
+        document.getElementById("acceptCookies").addEventListener("click", () => {
+            window.localStorage.setItem("firstTimeUser", "false");
+            modal.hide()
+            setTimeout(showToast, 8000);
+        })
+
+        document.getElementById("rejectCookies").addEventListener("click", () => {
+            setTimeout(showToast, 8000);
+        })
+    }  
+}
+
+const showToast = () => {
+    const toastElement = document.getElementById("welcomePopup");
+    const toast = new bootstrap.Toast(toastElement);
+    toast.show();
+}  
+
 
 // LOADING
-Promise.all([getNeowsData(), getMarsData(), getImg()])
+Promise.all([getNeowsData(), getMarsData(), getImg(), getUsersData()])
     .then(() => {
+        assignUsername();
         loadingSpinner.classList.add("d-none");
         sections.forEach(section => {
             section.classList.replace("d-none", "d-block");
         })
         document.querySelector("aside").classList.remove("d-none")
+        setTimeout(showPrivacyBanner, 2000);
     })
     .catch((error) => {
         console.log(error);

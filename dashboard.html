@@ -47,7 +47,6 @@
     </header>
 
     <main>
-
         <!--LOADING SCREEN-->
         <div class="vh-100 w-100 d-flex justify-content-center align-items-center" id="loading-spinner">
             <div class="spinner-border" role="status">
@@ -60,6 +59,39 @@
             <i class="bi bi-exclamation-circle fs-1"></i>
             <p>Content loading failed. Please try again later.</p>
         </div>
+
+        <!--WELCOME POPUP-->
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="welcomePopup" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="4000">
+                <div class="toast-header">
+                    <strong class="me-auto">Welcome to Cosmic Insight!</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    Dive into the wonders of space with our interactive dashboard. Explore near-Earth objects, view stunning
+                    photos from Mars rovers, and marvel at the Astronomy Picture of the Day. Enjoy your journey through the
+                    cosmos.
+                </div>
+            </div>
+        </div>
+
+        <!--PRIVACY BANNER-->
+        <div class="modal fade" id="privacyBanner" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="staticBackdropLabel">Privacy</h1>
+                </div>
+                <div class="modal-body">
+                  This website uses cookies to attract innocent kids and boyscouts.<br>By clicking on accept you express your acceptance and accept to accept what is acceptable.
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="rejectCookies">Close</button>
+                  <button type="button" class="btn btn-primary" id="acceptCookies">Accept</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
         <!--PICTURE MODAL-->
         <div class="modal bg-dark" tabindex="-1" id="picModal">
@@ -84,48 +116,60 @@
                         <div>
                             <h5>Welcome back, <span id="usernameData"></span>!</h5>
                             <hr class="text-dark w-100">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark"
+                                        aria-current="page" href="./dashboard.html">Home</a>
+                                </li>
+                                <li>
+                                    <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark"
+                                        href="#">Dashboard</a>
+                                </li>
+                                <li>
+                                    <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark"
+                                        href="#">Data</a>
+                                </li>
+                                <li>
+                                    <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark"
+                                        href="#">Visualizations</a>
+                                </li>
+                                <li>
+                                    <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark"
+                                        href="#">Missions</a>
+                                </li>
+                                <li>
+                                    <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark"
+                                        href="#">Learn</a>
+                                </li>
+                                <li>
+                                    <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark"
+                                        href="#">Community</a>
+                                </li>
+                                <li>
+                                    <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark"
+                                        href="#">Tools</a>
+                                </li>
+                                <li>
+                                    <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark"
+                                        href="#">About Us</a>
+                                </li>
+                                <li>
+                                    <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark"
+                                        href="#">Contact Us</a>
+                                </li>
+                                <li>
+                                    <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark"
+                                        href="#">Settings</a>
+                                </li>
+                            </ul>
                         </div>
-                        <ul class="list-unstyled">
-                            <li>
-                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" aria-current="page" href="./dashboard.html">Home</a>
-                            </li>
-                            <li>
-                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" href="#">Dashboard</a>
-                            </li>
-                            <li>
-                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" href="#">Data</a>
-                            </li>
-                            <li>
-                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" href="#">Visualizations</a>
-                            </li>
-                            <li>
-                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" href="#">Missions</a>
-                            </li>
-                            <li>
-                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" href="#">Learn</a>
-                            </li>
-                            <li>
-                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" href="#">Community</a>
-                            </li>
-                            <li>
-                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" href="#">Tools</a>
-                            </li>
-                            <li>
-                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" href="#">About Us</a>
-                            </li>
-                            <li>
-                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" href="#">Contact Us</a>
-                            </li>
-                            <li>
-                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" href="#">Settings</a>
-                            </li>
-                        </ul>
                         <div>
                             <h6>Users Online</h6>
                             <div class="d-flex flex-wrap align-items-center" id="usersOnline"></div>
                         </div>
                     </aside>
                 </div>
+                
                 <!--RIGHT SIDE-->
                 <div class="col-12 col-lg-10 bg-light">
                     <!--HIGHLIGHTS-->
@@ -147,9 +191,7 @@
                                     </div>
                                     <div class="col-12 col-lg-4 mb-3">
                                         <h5 class="mb-3">Red Planet Snapshots</h5>
-                                        
-                                            <img src="" alt="" id="roverHighlight" class="highlight-card">
-                                        
+                                        <img src="" alt="" id="roverHighlight" class="highlight-card">
                                     </div>
                                     <div class="col-12 col-lg-4 mb-3">
                                         <h5 class="mb-3">Daily Dose of Space</h5>
@@ -173,7 +215,7 @@
                                 <hr class="w-100 pb-3">
                             </div>
                             <div class="col-12">
-                                <div id="neo-buttons" class="pb-3 d-flex justify-content-evenly align-items-center">
+                                <div id="neo-buttons" class="mb-5 d-flex justify-content-evenly align-items-center">
                                 </div>
                             </div>
                             <div class="col-12 col-md-4 pb-5">
