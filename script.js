@@ -97,7 +97,7 @@ const createNeoHighlight = (orderedData, data) => {
     const randomDayData = data[orderedData[Math.floor(Math.random() * orderedData.length)]]
     const object = getSingleNeoData(randomDayData[Math.floor(Math.random() * randomDayData.length)])
 
-    document.querySelector("#neoHighlight h5").innerText = object.name;
+    document.querySelector("#neoHighlight h6").innerText = object.name;
 
     document.querySelector("#neoHighlight p:first-of-type").innerText = `Close Approach Date: ${object.closeApproach}`;
 
@@ -111,7 +111,7 @@ const createNeoHighlight = (orderedData, data) => {
 const createDateButtons = (orderedData, data) => {
     orderedData.forEach((element, index) => {
         const button = document.createElement("button");
-        button.setAttribute("class", "btn btn-secondary-outline neows-btn");
+        button.setAttribute("class", "btn btn-secondary-outline text-light neows-btn");
         button.innerText = element;
         neoButtons.appendChild(button);
 
@@ -152,7 +152,7 @@ const drawNeo = (data) => {
         .attr("stroke-width", 1)
         .on("mouseover", (event, d) => {
             tooltip.style("opacity", 1)
-                .html(`Name: ${d.name}<br>Size: ${formatter.format(d.maxDiameter)} km<br>Miss Distance: ${formatter.format(d.distance)} km`)
+                .html(`Name: ${d.name}<br>Diameter: ${formatter.format(d.maxDiameter)} m<br>Distance: ${formatter.format(d.distance)} km`)
                 .style("left", `${event.pageX + 10}px`)
                 .style("top", `${event.pageY - 20}px`);
         })
@@ -323,7 +323,6 @@ const displayMarsImg = () => {
     const start = currentPage * itemsPerPage;
     const end = start + itemsPerPage;
     const toLoad = currentRoverData.slice(start, end);
-    console.log(toLoad)
 
     toLoad.forEach(item => {
         const col = document.createElement("div");
@@ -388,6 +387,46 @@ const displayMarsModal = (data) => {
 }
 
 
+// users
+const getUsersData = async () => {
+    try {
+        const response = await fetch(`https://dummyjson.com/users`);
+        const data = await response.json();
+        // random number of users
+        const users = data.users.slice(0, Math.floor(Math.random() * data.users.length))
+        users.forEach(user => displayUser(user));
+
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    } catch (error) {
+        console.log(error)
+    }
+}
+getUsersData()
+
+const displayUser = (data) => {
+    const anchor = document.createElement("a");
+    anchor.setAttribute("href", "#")
+    anchor.setAttribute("data-bs-toggle", "tooltip");
+    anchor.setAttribute("data-bs-title", data.username);
+
+    const img = document.createElement("img");
+    img.setAttribute("class", "fakeUserImg rounded-circle");
+    
+    img.src = data.image;
+    img.alt = data.username;
+
+    anchor.appendChild(img)
+    document.getElementById("usersOnline").append(anchor);
+}
+
+const assignUsername = () => {
+    const userName = window.localStorage.getItem("username");
+    document.getElementById("usernameData").innerText = userName;
+}   
+
+assignUsername();
+
 // LOADING
 Promise.all([getNeowsData(), getMarsData(), getImg()])
     .then(() => {
@@ -395,6 +434,7 @@ Promise.all([getNeowsData(), getMarsData(), getImg()])
         sections.forEach(section => {
             section.classList.replace("d-none", "d-block");
         })
+        document.querySelector("aside").classList.remove("d-none")
     })
     .catch((error) => {
         console.log(error);

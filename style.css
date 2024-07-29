@@ -1,3 +1,7 @@
+body {
+    overflow-x: hidden;
+}
+
 #neo-table-container {
     height: 40dvh;
     width: 100%;
@@ -39,4 +43,20 @@ svg {
 
 #astro-picture {
     cursor: zoom-in;
+}
+
+.fakeUserImg {
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+}
+
+#usernameData {
+    text-transform: capitalize;
+}
+
+.highlight-card {
+    height: 300px;
+    width: 300px;
+    object-fit: cover;
 }

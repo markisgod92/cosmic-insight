@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Cosmic Insight</title>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <h1>Cosmic Insight</h1>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="./dashboard.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#neoData">Neo Data</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#roverPics">Mars Rover Photos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#apod">APOD</a>
+                        </li>
+                    </ul>
+                    <div>
+                        <i class="bi bi-person-circle text-light fs-3"></i>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+
+        <!--LOADING SCREEN-->
+        <div class="vh-100 w-100 d-flex justify-content-center align-items-center" id="loading-spinner">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <!--ERROR SCREEN-->
+        <div class="vh-100 w-100 d-none flex-column justify-content-center align-items-center" id="loading-failed">
+            <i class="bi bi-exclamation-circle fs-1"></i>
+            <p>Content loading failed. Please try again later.</p>
+        </div>
+
+        <!--PICTURE MODAL-->
+        <div class="modal bg-dark" tabindex="-1" id="picModal">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content bg-dark text-light">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <img src="" alt="" class="w-100 h-100 object-fit-cover">
+                    </div>
+                    <div class="modal-footer"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid bg-dark-subtle">
+            <div class="row">
+                <!--SIDEBAR-->
+                <div class="d-none d-lg-block col-2 pe-0">
+                    <aside id="sidebar" class="d-none h-100 pt-3 ps-2 d-flex flex-column gap-5 border-end border-1 border-dark">
+                        <div>
+                            <h5>Welcome back, <span id="usernameData"></span>!</h5>
+                            <hr class="text-dark w-100">
+                        </div>
+                        <ul class="list-unstyled">
+                            <li>
+                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" aria-current="page" href="./dashboard.html">Home</a>
+                            </li>
+                            <li>
+                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" href="#">Dashboard</a>
+                            </li>
+                            <li>
+                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" href="#">Data</a>
+                            </li>
+                            <li>
+                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" href="#">Visualizations</a>
+                            </li>
+                            <li>
+                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" href="#">Missions</a>
+                            </li>
+                            <li>
+                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" href="#">Learn</a>
+                            </li>
+                            <li>
+                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" href="#">Community</a>
+                            </li>
+                            <li>
+                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" href="#">Tools</a>
+                            </li>
+                            <li>
+                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" href="#">About Us</a>
+                            </li>
+                            <li>
+                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" href="#">Contact Us</a>
+                            </li>
+                            <li>
+                                <a class="link-underline link-underline-opacity-25 link-underline-opacity-75-hover text-dark" href="#">Settings</a>
+                            </li>
+                        </ul>
+                        <div>
+                            <h6>Users Online</h6>
+                            <div class="d-flex flex-wrap align-items-center" id="usersOnline"></div>
+                        </div>
+                    </aside>
+                </div>
+                <!--RIGHT SIDE-->
+                <div class="col-12 col-lg-10 bg-light">
+                    <!--HIGHLIGHTS-->
+                    <section id="highlights" class="d-none bg-dark text-light my-3 p-3">
+                        <div class="row">
+                            <div class="col-12">
+                                <h3>Highlights</h3>
+                                <hr class="w-100 pb-3">
+                                <div class="row">
+                                    <div class="col-12 col-lg-4 mb-3">
+                                        <h5 class="mb-3">Hit or Miss?</h5>
+                                        <div id="neoHighlight" class="card border-0 bg-dark text-light">
+                                            <h6 class="card-title"></h6>
+                                            <p class="card-text"></p>
+                                            <p class="card-text"></p>
+                                            <p class="card-text"></p>
+                                            <p class="card-text"></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-4 mb-3">
+                                        <h5 class="mb-3">Red Planet Snapshots</h5>
+                                        
+                                            <img src="" alt="" id="roverHighlight" class="highlight-card">
+                                        
+                                    </div>
+                                    <div class="col-12 col-lg-4 mb-3">
+                                        <h5 class="mb-3">Daily Dose of Space</h5>
+                                        <div class="card highlight-card border-0" id="apodHighlight">
+                                            <img src="" alt="" class="card-img h-100 object-fit-cover">
+                                            <div class="card-img-overlay">
+                                                <p class="card-text text-light"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!--NEAR EARTH OBJECTS-->
+                    <section class="d-none bg-dark text-light my-3 p-3" id="neoData">
+                        <div class="row">
+                            <div class="col-12">
+                                <h3>Near Earth Objects</h3>
+                                <hr class="w-100 pb-3">
+                            </div>
+                            <div class="col-12">
+                                <div id="neo-buttons" class="pb-3 d-flex justify-content-evenly align-items-center">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 pb-5">
+                                <svg id="asteroidMap" viewBox="-400 -400 800 800"
+                                    preserveAspectRatio="xMidYMid meet"></svg>
+                                <div id="tooltip" class="tooltip"></div>
+                            </div>
+                            <div class="col-12 col-md-8 pb-5">
+                                <div id="neo-table-container" class="table-responsive">
+                                    <table id="neo-table" class="table table-dark">
+                                        <thead>
+                                            <tr>
+                                                <td scope="col" class="fw-bold align-top">Name</td>
+                                                <td scope="col" class="fw-bold align-top">Magnitude</td>
+                                                <td scope="col" class="fw-bold align-top">Close Approach Date</td>
+                                                <td scope="col" class="fw-bold align-top">Distance</td>
+                                                <td scope="col" class="fw-bold align-top">Speed</td>
+                                                <td scope="col" class="fw-bold align-top">Estimated Diameter</td>
+                                                <td scope="col" class="fw-bold align-top">Hazardous</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!--ROVER PICTURES-->
+                    <section class="d-none bg-dark text-light my-3 p-3" id="roverPics">
+                        <div class="row pb-5">
+                            <div class="col-12">
+                                <h3>Mars Rover Photos</h3>
+                                <hr class="w-100 pb-3">
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex align-items-center gap-3 mb-5" id="rover-selection">
+                                    <button class="btn btn-secondary" value="perseverance">Perseverance</button>
+                                    <button class="btn btn-secondary" value="curiosity">Curiosity</button>
+                                    <button class="btn btn-secondary" value="opportunity" disabled>Opportunity</button>
+                                    <button class="btn btn-secondary" value="spirit" disabled>Spirit</button>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="row row-cols-1 row-cols-md-3 row-cols-lg-6 g-4" id="mars-pictures"></div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mt-3 d-flex justify-content-end align-items-center">
+                                    <button class="btn btn-secondary" id="loadMoreRover">Load more</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!--PIC OF THE DAY-->
+                    <section class="d-none bg-dark text-light my-3 p-3" id="apod">
+                        <div class="row pb-5">
+                            <div class="col-12">
+                                <h3>Astronomy Picture of the Day</h3>
+                                <hr class="w-100 pb-3">
+                            </div>
+                            <div class="col-12 col-md-8 col-lg-6">
+                                <img id="astro-picture" class="w-100 object-fit-cover mb-2">
+                            </div>
+                            <div class="col-12 col-md-4 col-lg-6">
+                                <div id="astro-picture-data"></div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!--FOOTER-->
+    <footer class="bg-dark text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="py-3">MG 2024</div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
+        integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous"
+        async></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
